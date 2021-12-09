@@ -3,9 +3,6 @@ on:
   - push
 jobs:
   build:
-    container: 
-      image: ghcr.io/cicd-lectures/gitpod:latest
-      options: --user=root
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -13,8 +10,8 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
-      - run: java -jar menu-server
+      - run: mvn package
       - uses: actions/upload-artifact@v2
         with:
           name: menu-server
-          path: menu-server.jar
+          path: ./target/menu-server.jar
