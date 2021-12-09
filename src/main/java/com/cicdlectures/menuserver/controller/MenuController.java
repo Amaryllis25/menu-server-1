@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.cicdlectures.menuserver.dto.MenuDto;
 import com.cicdlectures.menuserver.service.CreateMenuService;
 import com.cicdlectures.menuserver.service.ListMenuService;
@@ -25,6 +30,9 @@ public class MenuController {
   private final ListMenuService listMenuService;
 
   private final MenuRepository menuRepository;
+
+  @JsonProperty("Code")
+  private Integer code;
 
   @Autowired
   MenuController(CreateMenuService createMenuService, ListMenuService listMenuService, MenuRepository menuRepository) {
@@ -46,6 +54,20 @@ public class MenuController {
 
   @DeleteMapping(path = "/menus/{id}")
   public void deleteMenu(@PathVariable Long id) {
-    menuRepository.deleteById(id);
+    if(menuRepository.existsById(id)){
+      menuRepository.deleteById(id);
+    }else{
+      throw new IdNotFound(id);
+    }
+    /*
+  if (code.toString() == (HttpStatus.OK).toString()){
+      System.out.println("Ok");
+    }
+  else if (code.toString() == (HttpStatus.NOT_FOUND).toString()){
+      System.out.println("Pas trouvé");
+    }
+  else if (code.toString() == (HttpStatus.INTERNAL_SERVER_ERROR).toString()){
+      System.out.println("Aie");
+    }*/
   }
 }
