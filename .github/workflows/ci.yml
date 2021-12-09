@@ -1,16 +1,11 @@
-name: Bonjour
+name: CI
 on:
   - push
 jobs:
-  dire_bonjour:
+  build:
     container: 
       image: ghcr.io/cicd-lectures/gitpod:latest
       options: --user=root
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: cat README.md | cowsay # Affiche le contenu du fichier `README.md` à la base du dépôt
-  run_maven:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -18,5 +13,8 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
-      - run: mvn -v
-      - run: mvn help:effective-pom
+      - run: java -jar menu-server
+      - uses: actions/upload-artifact@v2
+        with:
+          name: menu-server
+          path: menu-server.jar
