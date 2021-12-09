@@ -1,6 +1,8 @@
 package com.cicdlectures.menuserver.service;
 
-//import com.cicdlectures.menuserver.repository.MenuRepository;
+import java.util.List;
+
+import com.cicdlectures.menuserver.repository.MenuRepository;
 //import com.cicdlectures.menuserver.repository.DistRepository;
 import com.cicdlectures.menuserver.dto.MenuDto;
 import com.cicdlectures.menuserver.dto.DishDto;
@@ -11,24 +13,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 
-//import static org.mockito.Mockito.mock;
-//omport static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 //import static junit.jupiter.api.Assertions.assertEquals;
 
 public class ListMenuServiceTests {
+
     private ListMenuService subject;
+    private MenuRepository repository;
 
     @BeforeEach
     public void init() {
-      subject = new ListMenuService(null);
+      this.repository = mock(MenuRepository.class);
+      this.subject = new ListMenuService(this.repository);
     }
 
     @Test
     @DisplayName("lists all known menus")
     public void listsKnownMenus() {
-       List<MenuDto> got = subject.listMenus();
+      // Quand le repository reçoit l'appel findAll
+      // Alors il retourne la valeur null.
+      when(repository.findAll()).thenReturn(null);
     }
 }
