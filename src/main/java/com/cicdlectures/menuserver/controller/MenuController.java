@@ -59,15 +59,5 @@ public class MenuController {
     }else{
       throw new IdNotFound(id);
     }
-    /*
-  if (code.toString() == (HttpStatus.OK).toString()){
-      System.out.println("Ok");
-    }
-  else if (code.toString() == (HttpStatus.NOT_FOUND).toString()){
-      System.out.println("Pas trouvé");
-    }
-  else if (code.toString() == (HttpStatus.INTERNAL_SERVER_ERROR).toString()){
-      System.out.println("Aie");
-    }*/
   }
 }
