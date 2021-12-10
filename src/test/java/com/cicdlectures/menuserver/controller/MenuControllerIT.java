@@ -90,7 +90,7 @@ public class MenuControllerIT {
     MenuDto[] gotMenus = response.getBody();
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(wantMenus, gotMenus);
+    assertEquals(wantMenus, Arrays.asList(gotMenus));
   }
 }
 
