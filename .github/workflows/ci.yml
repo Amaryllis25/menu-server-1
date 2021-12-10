@@ -33,7 +33,9 @@ jobs:
         with:
           name: menu-server
           path: ./target/menu-server.jar
-      - uses: actions/create-release@v1
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -41,11 +43,13 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - uses: actions/upload-release-asset@v1
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/menu-server.zip
-          asset_name: menu-server.zip
-          asset_content_type: menu-server/zip
+          asset_path: ./menu-server.jar
+          asset_name: menu-server.jar
+          asset_content_type: application/jar-archive
