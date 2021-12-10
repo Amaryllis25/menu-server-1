@@ -50,7 +50,7 @@ public class MenuControllerIT {
 
   // Injecte automatiquement l'instance du menu repository
   @Autowired
-  private MenuRepository menuRepository;  
+  private MenuRepository repository;  
   // Injecte automatiquement l'instance du TestRestTemplate
   @Autowired
   private TestRestTemplate template;  
@@ -58,25 +58,38 @@ public class MenuControllerIT {
   @Test
   @DisplayName("lists all known menus")
   public void listExitingMenus() throws Exception {
-    // Effectue une requête GET /menus
-    ResponseEntity<MenuDto[]> response = this.template.getForEntity(getMenusURL().toString(), MenuDto[].class); 
-    //Parse le payload de la réponse sous forme d'array de MenuDto
-    MenuDto[] gotMenus = response.getBody();
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
 
     Iterable<MenuDto> wantMenus = Arrays.asList(
       new MenuDto(
         Long.valueOf(1),
         "Menu spécial du chef",
         new HashSet<>(
-          Arrays.asList(
-            new DishDto(Long.valueOf(1), "Bananes aux fraises"),
-            new DishDto(Long.valueOf(2), "Bananes flambées")
+            Arrays.asList(
+              new DishDto(Long.valueOf(1), "Bananes aux fraises"),
+              new DishDto(Long.valueOf(2), "Bananes flambées")
           )
         )
       )
     );
+  
+    Menu menu = new Menu(
+        null,
+        "Menu spécial du chef",
+        new HashSet<>(
+          Arrays.asList(
+            new Dish(null, "Bananes aux fraises", null),
+            new Dish(null, "Bananes flambées", null)
+          )
+        )
+      );
+    menu = repository.save(menu);
+
+    // Effectue une requête GET /menus
+    ResponseEntity<MenuDto[]> response = this.template.getForEntity(getMenusURL().toString(), MenuDto[].class); 
+    //Parse le payload de la réponse sous forme d'array de MenuDto
+    MenuDto[] gotMenus = response.getBody();
+
+    assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(wantMenus, gotMenus);
   }
 }
