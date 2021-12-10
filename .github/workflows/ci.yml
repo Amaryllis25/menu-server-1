@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
   pull_request:
     branches:
       - main
@@ -23,9 +25,7 @@ jobs:
   github-release:
     name: Release on Github
     runs-on: ubuntu-20.04
-    # Lance le job release si build et test se sont terminés normalement.
     needs: build
-    # Lance le job release uniquement si la branche est main.
     if: contains(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v2
